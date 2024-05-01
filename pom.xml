@@ -43,8 +43,9 @@
                         </goals>
                         <id>remove-target</id>
                         <configuration>
-                            <executable>rm -R</executable>
+                            <executable>rm</executable>
                             <arguments>
+                                <argument>-R</argument>
                                 <argument>target</argument>
                             </arguments>
                         </configuration>
