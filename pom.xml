@@ -29,14 +29,42 @@
                             <goal>exec</goal>
                         </goals>
                         <id>transform-classes</id>
+                        <configuration>
+                            <executable>node</executable>
+                            <arguments>
+                                <argument>scripts/transformer.js</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <id>remove-target</id>
+                        <configuration>
+                            <executable>rm -R</executable>
+                            <arguments>
+                                <argument>target</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <id>rename-jar</id>
+                        <configuration>
+                            <executable>mv</executable>
+                            <arguments>
+                                <argument>target/*.jar</argument>
+                                <argument>target/program.jar</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <executable>node</executable>
-                    <arguments>
-                        <argument>transformer.js</argument>
-                    </arguments>
-                </configuration>
+
             </plugin>
         </plugins>
     </build>
