@@ -59,7 +59,7 @@ function packageReplacerUtility(directoryTree, replacerName) {
     const { name, path, type, files } = item;
     if (type === "file" && name.endsWith(".java")) {
       let fileContents = fs.readFileSync(path, { encoding: "utf-8" });
-      fileContents.replace(/samplecodepackage/g, replacerName)
+      fileContents = fileContents.replace(/samplecodepackage/g, replacerName)
       fs.writeFileSync(path, fileContents, { encoding: "utf-8" })
     } else if (type === "directory") {
       packageReplacerUtility(files, replacerName)
