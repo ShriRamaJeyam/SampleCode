@@ -57,10 +57,9 @@
                         </goals>
                         <id>rename-jar</id>
                         <configuration>
-                            <executable>mv</executable>
+                            <executable>source</executable>
                             <arguments>
-                                <argument>target/*.jar</argument>
-                                <argument>target/program.jar</argument>
+                                <argument>scripts/rename.sh</argument>
                             </arguments>
                         </configuration>
                     </execution>
