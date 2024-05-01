@@ -42,7 +42,7 @@ function checkDirectoryStructure(directoryTree) {
         files.length === 1 && files[0].name === "in" && files[0].type === "directory" &&
         files[0].files.length === 1 && files[0].files[0].name === "hingua" && files[0].files[0].type === "directory" &&
         files[0].files[0].files.length === 1 && files[0].files[0].files[0].name === "samplecodepackage" && files[0].files[0].files[0].type === "directory"
-      ) {} 
+      ) { }
       else {
         console.log(directoryTree);
         throw new Error(`The src/main/${name} can contain only classpath in.hingua.samplecode`);
@@ -54,12 +54,26 @@ function checkDirectoryStructure(directoryTree) {
   }
 }
 
+function packageReplacerUtility(directoryTree, replacerName) {
+  directoryTree.forEach(item => {
+    const { name, path, type, files } = item;
+    if (type === "file" && name.endsWith(".java")) {
+      let fileContents = fs.readFileSync(path, { encoding: "utf-8" });
+      fileContents.replace(/samplecodepackage/g, replacerName)
+      fs.writeFileSync(path, fileContents, { encoding: "utf-8" })
+    } else if (type === "directory") {
+      packageReplacerUtility(files, replacerName)
+    }
+  });
+}
+
+function renameUtility(directoryTree, replacerName) {
+  packageReplacerUtility(directoryTree, replacerName);
+  fs.renameSync("src/main/java/in/hingua/samplecodepackage", `src/main/java/in/hingua/${replacerName}`)
+  fs.renameSync("src/main/resources/in/hingua/samplecodepackage", `src/main/resources/in/hingua/${replacerName}`)
+}
+
 const currentDirectory = 'src/main';
 const directoryTree = generateDirectoryTree(currentDirectory);
-checkDirectoryStructure(directoryTree)
-
-
-
-
-
-// console.log(JSON.stringify(directoryTree, null, 2));
+checkDirectoryStructure(directoryTree);
+renameUtility(directoryTree, "temporary");
